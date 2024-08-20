@@ -25,9 +25,11 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@
 
 interface Pool {
   name: string,
+  url: string,
   dailyReward: number,
   totalReward: number,
   investmentInUSD: number,
+  liquidityBeforeDeposit: number,
   liquidityAfterDeposit: number,
   position: number,
   positionInPercents: number,
@@ -40,6 +42,7 @@ interface Pool {
 export function Component() {
   const [searchTerms, setSearchTerms] = useState({
     name: "",
+    deposit: 100,
   })
   const [sortColumn, setSortColumn] = useState(null)
   const [sortDirection, setSortDirection] = useState(null)
@@ -51,7 +54,7 @@ export function Component() {
   }, [data, isLoading]);
 
   const loadData = () => {
-    fetch('http://localhost:8091/rewards?deposit=100') // Replace with your API endpoint
+    fetch('http://localhost:8091/rewards?deposit=' + searchTerms.deposit) // Replace with your API endpoint
       .then(response => response.json())
       .then(json => setData(json))
       .catch(error => console.error('Error fetching data:', error));
@@ -102,6 +105,15 @@ export function Component() {
         <div className="grid grid-cols-3 gap-4">
           <div>
             <Input
+              name="deposit"
+              placeholder="Search by deposit in $"
+              value={searchTerms.deposit}
+              onChange={handleSearch}
+              className="bg-muted"
+            />
+          </div>
+          <div>
+            <Input
               name="name"
               placeholder="Search by name"
               value={searchTerms.name}
@@ -114,44 +126,44 @@ export function Component() {
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead className="cursor-pointer" onClick={() => handleSort("deposit")}>
+              Deposit
+              {sortColumn === "deposit" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
+            </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("name")}>
               Pull Name
               {sortColumn === "name" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("dailyReward")}>
-              Daily Reward
+              Pool Daily Reward
               {sortColumn === "dailyReward" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("totalReward")}>
-              Total Reward
+              Pool Total Reward
               {sortColumn === "totalReward" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
+            <TableHead className="cursor-pointer" onClick={() => handleSort("liquidityBeforeDeposit")}>
+              Liquidity Before Deposit
+              {sortColumn === "liquidityBeforeDeposit" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
+            </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("liquidityAfterDeposit")}>
-              liquidityAfterDeposit
+              Liquidity After Deposit
               {sortColumn === "liquidityAfterDeposit" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("position")}>
-              position
+              Position
               {sortColumn === "position" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
-            <TableHead className="cursor-pointer" onClick={() => handleSort("positionInPercents")}>
-              positionInPercents
-              {sortColumn === "positionInPercents" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
-            </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("dailyRewardInUSD")}>
-              dailyRewardInUSD
+              Daily Profit
               {sortColumn === "dailyRewardInUSD" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
-            <TableHead className="cursor-pointer" onClick={() => handleSort("dailyRewardInPercents")}>
-              dailyRewardInPercents
-              {sortColumn === "dailyRewardInPercents" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
-            </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("daysLeft")}>
-              daysLeft
+              Days Left
               {sortColumn === "daysLeft" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("maxPossibleRewardInUSD")}>
-              maxPossibleRewardInUSD
+              Max Possible Profit
               {sortColumn === "maxPossibleRewardInUSD" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
           </TableRow>
@@ -159,14 +171,14 @@ export function Component() {
         <TableBody>
           {sortedPools.map((dat) => (
             <TableRow key={dat.name}>
-              <TableCell>{dat.name}</TableCell>
+              <TableCell>${dat.investmentInUSD}</TableCell>
+              <TableCell><a href="{dat.url}">{dat.name}</a></TableCell>
               <TableCell>${dat.dailyReward}</TableCell>
               <TableCell>${dat.totalReward}</TableCell>
+              <TableCell>${dat.liquidityBeforeDeposit}</TableCell>
               <TableCell>${dat.liquidityAfterDeposit}</TableCell>
-              <TableCell>{dat.position}</TableCell>
               <TableCell>{dat.positionInPercents}%</TableCell>
               <TableCell>${dat.dailyRewardInUSD}</TableCell>
-              <TableCell>{dat.dailyRewardInPercents}%</TableCell>
               <TableCell>{dat.daysLeft}</TableCell>
               <TableCell>${dat.maxPossibleRewardInUSD}</TableCell>
             </TableRow>
