@@ -49,10 +49,6 @@ export function Component() {
   const [data, setData] = useState<Pool[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    loadData()
-  }, [data, isLoading]);
-
   const loadData = () => {
     fetch('http://localhost:8091/rewards?deposit=' + searchTerms.deposit) // Replace with your API endpoint
       .then(response => response.json())
@@ -61,12 +57,14 @@ export function Component() {
     setIsLoading(false)
   }
 
+  useEffect(() => {
+    loadData()
+  }, [searchTerms.deposit]);
+
   const filteredPools = useMemo(() => {
     return data.filter((dat) => {
       return (
-        dat.name.toLowerCase().includes(searchTerms.name.toLowerCase()) //&&
-        // dat.dailyReward.toLowerCase().includes(searchTerms.dailyReward.toLowerCase()) &&
-        // dat.totalReward.toLowerCase().includes(searchTerms.totalReward.toLowerCase())
+        dat.name.toLowerCase().includes(searchTerms.name.toLowerCase())
       )
     })
   }, [searchTerms, data])
