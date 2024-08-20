@@ -40,8 +40,6 @@ interface Pool {
 export function Component() {
   const [searchTerms, setSearchTerms] = useState({
     name: "",
-    dailyReward: "",
-    totalReward: "",
   })
   const [sortColumn, setSortColumn] = useState(null)
   const [sortDirection, setSortDirection] = useState(null)
@@ -111,24 +109,6 @@ export function Component() {
               className="bg-muted"
             />
           </div>
-          <div>
-            <Input
-              name="dailyReward"
-              placeholder="Search by dailyReward"
-              value={searchTerms.dailyReward}
-              onChange={handleSearch}
-              className="bg-muted"
-            />
-          </div>
-          <div>
-            <Input
-              name="totalReward"
-              placeholder="Search by totalReward"
-              value={searchTerms.totalReward}
-              onChange={handleSearch}
-              className="bg-muted"
-            />
-          </div>
         </div>
       </div>
       <Table>
@@ -146,14 +126,49 @@ export function Component() {
               Total Reward
               {sortColumn === "totalReward" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
+            <TableHead className="cursor-pointer" onClick={() => handleSort("liquidityAfterDeposit")}>
+              liquidityAfterDeposit
+              {sortColumn === "liquidityAfterDeposit" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
+            </TableHead>
+            <TableHead className="cursor-pointer" onClick={() => handleSort("position")}>
+              position
+              {sortColumn === "position" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
+            </TableHead>
+            <TableHead className="cursor-pointer" onClick={() => handleSort("positionInPercents")}>
+              positionInPercents
+              {sortColumn === "positionInPercents" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
+            </TableHead>
+            <TableHead className="cursor-pointer" onClick={() => handleSort("dailyRewardInUSD")}>
+              dailyRewardInUSD
+              {sortColumn === "dailyRewardInUSD" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
+            </TableHead>
+            <TableHead className="cursor-pointer" onClick={() => handleSort("dailyRewardInPercents")}>
+              dailyRewardInPercents
+              {sortColumn === "dailyRewardInPercents" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
+            </TableHead>
+            <TableHead className="cursor-pointer" onClick={() => handleSort("daysLeft")}>
+              daysLeft
+              {sortColumn === "daysLeft" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
+            </TableHead>
+            <TableHead className="cursor-pointer" onClick={() => handleSort("maxPossibleRewardInUSD")}>
+              maxPossibleRewardInUSD
+              {sortColumn === "maxPossibleRewardInUSD" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {sortedPools.map((dat) => (
             <TableRow key={dat.name}>
               <TableCell>{dat.name}</TableCell>
-              <TableCell>{dat.dailyReward}</TableCell>
-              <TableCell>{dat.totalReward}</TableCell>
+              <TableCell>${dat.dailyReward}</TableCell>
+              <TableCell>${dat.totalReward}</TableCell>
+              <TableCell>${dat.liquidityAfterDeposit}</TableCell>
+              <TableCell>{dat.position}</TableCell>
+              <TableCell>{dat.positionInPercents}%</TableCell>
+              <TableCell>${dat.dailyRewardInUSD}</TableCell>
+              <TableCell>{dat.dailyRewardInPercents}%</TableCell>
+              <TableCell>{dat.daysLeft}</TableCell>
+              <TableCell>${dat.maxPossibleRewardInUSD}</TableCell>
             </TableRow>
           ))}
         </TableBody>
