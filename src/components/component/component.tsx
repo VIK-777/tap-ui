@@ -125,7 +125,7 @@ export function Component() {
         <TableHeader>
           <TableRow>
             <TableHead className="cursor-pointer" onClick={() => handleSort("deposit")}>
-              Deposit
+              Your Deposit
               {sortColumn === "deposit" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("name")}>
@@ -149,11 +149,11 @@ export function Component() {
               {sortColumn === "liquidityAfterDeposit" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("position")}>
-              Position
+              Your Position
               {sortColumn === "position" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("dailyRewardInUSD")}>
-              Daily Profit
+              Your Daily Profit
               {sortColumn === "dailyRewardInUSD" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("daysLeft")}>
@@ -161,7 +161,7 @@ export function Component() {
               {sortColumn === "daysLeft" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("maxPossibleRewardInUSD")}>
-              Max Possible Profit
+              Your Max Possible Profit
               {sortColumn === "maxPossibleRewardInUSD" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
           </TableRow>
