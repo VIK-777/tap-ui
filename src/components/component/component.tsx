@@ -26,6 +26,7 @@ import Link from 'next/link'
 import NavLink from "@/components/nav-link"
 
 interface Pool {
+  dexImgUrl: string,
   name: string,
   url: string,
   dailyReward: number,
@@ -118,7 +119,7 @@ export function Component() {
   return (
     <div className="bg-background rounded-lg shadow-lg">
       <div className="p-4 border-b">
-        Deposit
+        Deposit in $
         <div className="grid grid-cols-3 gap-4">
           <div>
             <Input
@@ -195,7 +196,7 @@ export function Component() {
             <TableRow key={dat.name}>
               <TableCell>${dat.investmentInUSD}</TableCell>
               <TableCell style={styles.container}>
-                <img src="https://dedust.io/favicon.ico" style={styles.image}></img><a href={dat.url} style={styles.text}><u>{dat.name}</u></a>
+                <img src={dat.dexImgUrl} style={styles.image}></img><a href={dat.url} style={styles.text}><u>{dat.name}</u></a>
               </TableCell>
               <TableCell>${dat.dailyReward}</TableCell>
               <TableCell>${dat.totalReward}</TableCell>
