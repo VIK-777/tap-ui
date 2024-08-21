@@ -22,6 +22,8 @@ To read more about using these font, please visit the Next.js documentation:
 import { useState, useMemo, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
+import Link from 'next/link'
+import NavLink from "@/components/nav-link"
 
 interface Pool {
   name: string,
@@ -97,9 +99,26 @@ export function Component() {
     return <div>Loading...</div>;
   }
 
+  const styles = {
+    container: {
+      display: 'flex',
+      alignItems: 'center', // Align items vertically centered
+    },
+    image: {
+      height: '2em', // Set the image height to match the text height
+      width: 'auto', // Maintain aspect ratio
+      verticalAlign: 'middle', // Ensure vertical alignment with text
+    },
+    text: {
+      lineHeight: '1em', // Ensure line height matches the image height
+      margin: '0 10px', // Optional: Add some margin around the text
+    },
+  };
+
   return (
     <div className="bg-background rounded-lg shadow-lg">
       <div className="p-4 border-b">
+        Deposit
         <div className="grid grid-cols-3 gap-4">
           <div>
             <Input
@@ -110,6 +129,11 @@ export function Component() {
               className="bg-muted"
             />
           </div>
+        </div>
+      </div>
+      <div className="p-4 border-b">
+        Filters
+        <div className="grid grid-cols-3 gap-4">
           <div>
             <Input
               name="name"
@@ -129,7 +153,7 @@ export function Component() {
               {sortColumn === "deposit" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("name")}>
-              Pull Name
+              Pool
               {sortColumn === "name" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
             </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("dailyReward")}>
@@ -170,7 +194,9 @@ export function Component() {
           {sortedPools.map((dat) => (
             <TableRow key={dat.name}>
               <TableCell>${dat.investmentInUSD}</TableCell>
-              <TableCell><a href="{dat.url}">{dat.name}</a></TableCell>
+              <TableCell style={styles.container}>
+                <img src="https://dedust.io/favicon.ico" style={styles.image}></img><a href={dat.url} style={styles.text}><u>{dat.name}</u></a>
+              </TableCell>
               <TableCell>${dat.dailyReward}</TableCell>
               <TableCell>${dat.totalReward}</TableCell>
               <TableCell>${dat.liquidityBeforeDeposit}</TableCell>
