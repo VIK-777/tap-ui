@@ -149,6 +149,7 @@ export function Component() {
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead></TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("deposit")}>
               Your Deposit
               {sortColumn === "deposit" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
@@ -192,8 +193,9 @@ export function Component() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {sortedPools.map((dat) => (
+          {sortedPools.map((dat, index) => (
             <TableRow key={dat.name}>
+              <TableCell>{index + 1}</TableCell>
               <TableCell>${dat.investmentInUSD}</TableCell>
               <TableCell style={styles.container}>
                 <img src={dat.dexImgUrl} style={styles.image}></img><a href={dat.url} style={styles.text}><u>{dat.name}</u></a>
