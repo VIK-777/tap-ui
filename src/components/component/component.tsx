@@ -46,7 +46,7 @@ export function Component() {
     deposit: 100,
   })
   const [sortColumn, setSortColumn] = useState(null)
-  const [sortDirection, setSortDirection] = useState(null)
+  const [sortDirection, setSortDirection] = useState<any>(null)
   const [data, setData] = useState<Pool[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -78,7 +78,7 @@ export function Component() {
     })
   }, [filteredPools, sortColumn, sortDirection, data])
 
-  const handleSort = (column) => {
+  const handleSort = (column: any) => {
     if (sortColumn === column) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc")
     } else {
@@ -86,7 +86,7 @@ export function Component() {
       setSortDirection("asc")
     }
   }
-  const handleSearch = (e) => {
+  const handleSearch = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target
     setSearchTerms((prevState) => ({
       ...prevState,
