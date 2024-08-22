@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
 
 interface Pool {
+  dexName: string,
   dexImgUrl: string,
   name: string,
   url: string,
@@ -49,6 +50,7 @@ export function Component() {
   const [sortDirection, setSortDirection] = useState<any>(null)
   const [data, setData] = useState<Pool[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [hover, setHover] = useState<boolean>(false);
 
   const loadData = () => {
     fetch('http://localhost:8091/rewards?deposit=' + searchTerms.deposit) // Replace with your API endpoint
@@ -196,7 +198,7 @@ export function Component() {
               <TableCell>{index + 1}</TableCell>
               <TableCell>${dat.investmentInUSD}</TableCell>
               <TableCell style={styles.container}>
-                <img src={dat.dexImgUrl} style={styles.image}></img><a href={dat.url} style={styles.text}><u>{dat.name}</u></a>
+                <img src={dat.dexImgUrl} style={styles.image} title={dat.dexName}></img><a href={dat.url} style={styles.text}><u>{dat.name}</u></a>
               </TableCell>
               <TableCell>${dat.dailyReward}</TableCell>
               <TableCell>${dat.totalReward}</TableCell>
