@@ -22,8 +22,6 @@ To read more about using these font, please visit the Next.js documentation:
 import { useState, useMemo, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
-import Link from 'next/link'
-import NavLink from "@/components/nav-link"
 
 interface Pool {
   dexImgUrl: string,
