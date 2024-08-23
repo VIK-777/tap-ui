@@ -50,7 +50,6 @@ export function Component() {
   const [sortDirection, setSortDirection] = useState<any>(null)
   const [data, setData] = useState<Pool[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [hover, setHover] = useState<boolean>(false);
 
   const loadData = () => {
     fetch('http://localhost:8091/rewards?deposit=' + searchTerms.deposit) // Replace with your API endpoint
