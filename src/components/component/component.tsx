@@ -52,7 +52,7 @@ export function Component() {
   const [isLoading, setIsLoading] = useState(true);
 
   const loadData = () => {
-    fetch('http://localhost:8091/rewards?deposit=' + searchTerms.deposit) // Replace with your API endpoint
+    fetch(process.env.NEXT_PUBLIC_BACKEND_URL + '/rewards?deposit=' + searchTerms.deposit) // Replace with your API endpoint
       .then(response => response.json())
       .then(json => setData(json))
       .catch(error => console.error('Error fetching data:', error));
