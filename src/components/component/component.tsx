@@ -193,7 +193,7 @@ export function Component() {
         </TableHeader>
         <TableBody>
           {sortedPools.map((dat, index) => (
-            <TableRow key={dat.name}>
+            <TableRow key={index}>
               <TableCell>{index + 1}</TableCell>
               <TableCell>${dat.investmentInUSD}</TableCell>
               <TableCell style={styles.container}>
