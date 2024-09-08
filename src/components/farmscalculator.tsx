@@ -84,7 +84,7 @@ export function FarmsCalculator() {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc")
     } else {
       setSortColumn(column)
-      setSortDirection("asc")
+      setSortDirection("desc")
     }
   }
   const handleSearch = (e: { target: { name: any; value: any } }) => {

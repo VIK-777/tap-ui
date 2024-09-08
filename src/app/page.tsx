@@ -1,7 +1,8 @@
-import { FarmsCalculator } from "@/components/farmscalculator";
-
 export default function Home() {
   return (
-    <body><FarmsCalculator></FarmsCalculator></body>
+    <body>
+      <a href="/farms">Farms</a>
+      <a href="/userAssets">User Assets</a>
+    </body>
   )
 }
