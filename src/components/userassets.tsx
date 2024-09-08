@@ -23,7 +23,11 @@ import { useState, useMemo, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
 
-interface UserAsset {
+interface UserAssetKeys {
+  [key: string]: any;
+}
+
+interface UserAsset extends UserAssetKeys {
   name: string,
   image: string,
   category: string,
