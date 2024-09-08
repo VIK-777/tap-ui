@@ -6,6 +6,7 @@ export default function Home() {
   const pathname = usePathname()
   const basePathSegments = pathname.split('/').slice(0, -1)
   const basePath = basePathSegments.join('/')
+  console.log("Base path: " + basePath)
   return (
     <body>
       <div><a href={`${basePath}/farms`}>Farms</a></div>
