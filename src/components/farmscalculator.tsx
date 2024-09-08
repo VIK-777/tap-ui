@@ -41,7 +41,7 @@ interface Pool {
   maxPossibleRewardInUSD: number,
 }
 
-export function Component() {
+export function FarmsCalculator() {
   const [searchTerms, setSearchTerms] = useState({
     name: "",
     deposit: 100,

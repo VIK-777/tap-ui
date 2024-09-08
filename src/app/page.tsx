@@ -1,7 +1,7 @@
-import { Component } from "@/components/component/component";
+import { FarmsCalculator } from "@/components/farmscalculator";
 
 export default function Home() {
   return (
-    <body><Component></Component></body>
+    <body><FarmsCalculator></FarmsCalculator></body>
   )
 }
