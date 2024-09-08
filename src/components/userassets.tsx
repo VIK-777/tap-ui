@@ -19,9 +19,10 @@ To read more about using these font, please visit the Next.js documentation:
 **/
 "use client"
 
-import { useState, useMemo, useEffect } from "react"
+import { useRef, useState, useMemo, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
+import Chart from 'chart.js/auto';
 
 interface UserAssetKeys {
   [key: string]: any;
@@ -29,6 +30,7 @@ interface UserAssetKeys {
 
 interface UserAsset extends UserAssetKeys {
   name: string,
+  symbol: string,
   image: string,
   category: string,
   balance: number,
@@ -105,10 +107,6 @@ export function UserAssets() {
     }))
   }
 
-  if (isLoading && data.length === 0) {
-    return <div>Loading...</div>;
-  }
-
   const styles = {
     container: {
       display: 'flex',
@@ -125,6 +123,75 @@ export function UserAssets() {
       margin: '0 10px', // Optional: Add some margin around the text
     },
   };
+
+  const canvas = useRef()
+  useEffect(() => {
+    const ctx = canvas.current;
+
+    if (Chart.getChart('myChart')) {
+      Chart.getChart('myChart')?.destroy();
+    }
+
+    // Group data by category and calculate total USD value for each category
+    const categoryData = data.reduce((acc, asset) => {
+      const category = asset.category;
+      if (!acc[category]) {
+        acc[category] = 0;
+      }
+      acc[category] += asset.values.USD;
+      return acc;
+    }, {});
+
+    // Extract labels and data for the chart
+    const labels = Object.keys(categoryData);
+    const chartData = Object.values(categoryData).map((value) => value.toFixed(2));
+
+    const chart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'USD Value',
+            data: chartData,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+            ],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Total USD Value by categories',
+          },
+        },
+      },
+    });
+  }, [data])
+
+  if (isLoading && data.length === 0) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="bg-background rounded-lg shadow-lg">
@@ -144,6 +211,9 @@ export function UserAssets() {
       </div>
       <div className="p-4 border-b">
         Total assets: ${(data.reduce((sum, item) => sum + item.values.USD, 0)).toFixed(2)} / {(data.reduce((sum, item) => sum + item.values.TON, 0)).toFixed(2)} TON
+      </div>
+      <div className='container'>
+        <canvas id='myChart' ref={canvas}></canvas>
       </div>
       <Table>
         <TableHeader>
@@ -180,7 +250,7 @@ export function UserAssets() {
               <TableCell style={styles.container}>
                 <img src={dat.image} style={styles.image} title={dat.name}></img><a style={styles.text}>{dat.name}</a>
               </TableCell>
-              <TableCell>{dat.balance.toFixed(2)}</TableCell>
+              <TableCell>{dat.balance.toFixed(2)} {dat.symbol}</TableCell>
               <TableCell>${dat.values.USD.toFixed(2)}</TableCell>
               <TableCell>{dat.values.TON.toFixed(2)} TON</TableCell>
             </TableRow>
