@@ -25,6 +25,7 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@
 
 interface UserAsset {
   name: string,
+  image: string,
   category: string,
   balance: number,
   prices: {
@@ -113,6 +114,7 @@ export function UserAssets() {
       height: '2em', // Set the image height to match the text height
       width: 'auto', // Maintain aspect ratio
       verticalAlign: 'middle', // Ensure vertical alignment with text
+      borderRadius: '50%',
     },
     text: {
       lineHeight: '1em', // Ensure line height matches the image height
@@ -136,10 +138,17 @@ export function UserAssets() {
           </div>
         </div>
       </div>
+      <div className="p-4 border-b">
+        Total assets: ${(data.reduce((sum, item) => sum + item.values.USD, 0)).toFixed(2)} / {(data.reduce((sum, item) => sum + item.values.TON, 0)).toFixed(2)} TON
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead></TableHead>
+            <TableHead className="cursor-pointer" onClick={() => handleSort("category")}>
+              Category
+              {sortColumn === "category" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
+            </TableHead>
             <TableHead className="cursor-pointer" onClick={() => handleSort("name")}>
               Name
               {sortColumn === "name" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
@@ -163,10 +172,13 @@ export function UserAssets() {
       .map((dat, index) => (
             <TableRow key={index}>
               <TableCell>{index + 1}</TableCell>
-              <TableCell>{dat.name}</TableCell>
-              <TableCell>{dat.balance}</TableCell>
-              <TableCell>${dat.values.USD}</TableCell>
-              <TableCell>{dat.values.TON} TON</TableCell>
+              <TableCell>{dat.category}</TableCell>
+              <TableCell style={styles.container}>
+                <img src={dat.image} style={styles.image} title={dat.name}></img><a style={styles.text}>{dat.name}</a>
+              </TableCell>
+              <TableCell>{dat.balance.toFixed(2)}</TableCell>
+              <TableCell>${dat.values.USD.toFixed(2)}</TableCell>
+              <TableCell>{dat.values.TON.toFixed(2)} TON</TableCell>
             </TableRow>
           ))}
         </TableBody>

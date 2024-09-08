@@ -1,8 +1,8 @@
 export default function Home() {
   return (
     <body>
-      <a href="/farms">Farms</a>
-      <a href="/userAssets">User Assets</a>
+      <div><a href="/farms">Farms</a></div>
+      <div><a href="/userAssets">User Assets</a></div>
     </body>
   )
 }

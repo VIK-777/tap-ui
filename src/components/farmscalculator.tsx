@@ -195,18 +195,18 @@ export function FarmsCalculator() {
           {sortedPools.map((dat, index) => (
             <TableRow key={index}>
               <TableCell>{index + 1}</TableCell>
-              <TableCell>${dat.investmentInUSD}</TableCell>
+              <TableCell>${dat.investmentInUSD.toFixed(0)}</TableCell>
               <TableCell style={styles.container}>
                 <img src={dat.dexImgUrl} style={styles.image} title={dat.dexName}></img><a href={dat.url} style={styles.text}><u>{dat.name}</u></a>
               </TableCell>
-              <TableCell>${dat.dailyReward}</TableCell>
-              <TableCell>${dat.totalReward}</TableCell>
-              <TableCell>${dat.liquidityBeforeDeposit}</TableCell>
-              <TableCell>${dat.liquidityAfterDeposit}</TableCell>
-              <TableCell>{dat.positionInPercents}%</TableCell>
-              <TableCell>${dat.dailyRewardInUSD}</TableCell>
+              <TableCell>${dat.dailyReward.toFixed(4)}</TableCell>
+              <TableCell>${dat.totalReward.toFixed(2)}</TableCell>
+              <TableCell>${dat.liquidityBeforeDeposit.toFixed(2)}</TableCell>
+              <TableCell>${dat.liquidityAfterDeposit.toFixed(2)}</TableCell>
+              <TableCell>{dat.positionInPercents.toFixed(2)}%</TableCell>
+              <TableCell>${dat.dailyRewardInUSD.toFixed(2)}</TableCell>
               <TableCell>{dat.daysLeft}</TableCell>
-              <TableCell>${dat.maxPossibleRewardInUSD}</TableCell>
+              <TableCell>${dat.maxPossibleRewardInUSD.toFixed(2)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
