@@ -23,6 +23,7 @@ import { useRef, useState, useMemo, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
 import Chart from 'chart.js/auto';
+import { Button } from "@/components/ui/button"
 
 interface UserAssetKeys {
   [key: string]: any;
@@ -59,20 +60,23 @@ export function UserAssets({ address, flatten, categoryFieldName }: UserAssetsPr
   const [sortColumn, setSortColumn] = useState(null)
   const [sortDirection, setSortDirection] = useState<any>(null)
   const [data, setData] = useState<UserAsset[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [currentAddress, setCurrentAddress] = useState(address);
+  const [isFetching, setIsFetching] = useState(false); // State for loading indicator
 
   const loadData = () => {
+    setIsFetching(true); // Show loading indicator
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/test?flatten=${flatten}&address=${currentAddress}`)
       .then(response => response.json())
       .then(json => setData(json))
-      .catch(error => console.error('Error fetching data:', error));
-    setIsLoading(false)
+      .catch(error => console.error('Error fetching data:', error))
+      .finally(() => setIsFetching(false)); // Hide loading indicator
+    // setIsLoading(false)
   }
 
-  useEffect(() => {
-    loadData()
-  }, [currentAddress, flatten]);
+  // useEffect(() => {
+  //   loadData()
+  // }, [currentAddress, flatten]);
 
   const filteredAssets = useMemo(() => {
     return data.filter((dat) => {
@@ -201,9 +205,9 @@ export function UserAssets({ address, flatten, categoryFieldName }: UserAssetsPr
     }
   }, [data, categoryFieldName])
 
-  if (isLoading && data.length === 0) {
-    return <div>Loading...</div>;
-  }
+  // if (isLoading && data.length === 0) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <div className="bg-background rounded-lg shadow-lg">
@@ -218,6 +222,15 @@ export function UserAssets({ address, flatten, categoryFieldName }: UserAssetsPr
             onChange={handleAddressChange}
             className="bg-muted"
           />
+        </div>
+        <div> {/* Add a button to trigger data fetching */}
+          <Button onClick={loadData} disabled={isFetching}>
+            {isFetching ? (
+              <span className="loading custom-spinner"></span> // Spinner while loading
+            ) : (
+              "Fetch Data"
+            )}
+          </Button>
         </div>
       </div>
     </div>
