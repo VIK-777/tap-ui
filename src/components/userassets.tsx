@@ -46,7 +46,13 @@ interface UserAsset extends UserAssetKeys {
   mappedAssets: [UserAsset],
 }
 
-export function UserAssets() {
+interface UserAssetsProps {
+  address: string;
+  flatten: boolean;
+  categoryFieldName: string;
+}
+
+export function UserAssets({ address, flatten, categoryFieldName }: UserAssetsProps) {
   const [searchTerms, setSearchTerms] = useState({
     name: "",
   })
@@ -54,9 +60,10 @@ export function UserAssets() {
   const [sortDirection, setSortDirection] = useState<any>(null)
   const [data, setData] = useState<UserAsset[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentAddress, setCurrentAddress] = useState(address);
 
   const loadData = () => {
-    fetch(process.env.NEXT_PUBLIC_BACKEND_URL + '/test') // Replace with your API endpoint
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/test?flatten=${flatten}&address=${currentAddress}`)
       .then(response => response.json())
       .then(json => setData(json))
       .catch(error => console.error('Error fetching data:', error));
@@ -65,7 +72,7 @@ export function UserAssets() {
 
   useEffect(() => {
     loadData()
-  }, []);
+  }, [currentAddress, flatten]);
 
   const filteredAssets = useMemo(() => {
     return data.filter((dat) => {
@@ -106,6 +113,9 @@ export function UserAssets() {
       [name]: value,
     }))
   }
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentAddress(e.target.value);
+  };
 
   const styles = {
     container: {
@@ -124,70 +134,72 @@ export function UserAssets() {
     },
   };
 
-  const canvas = useRef()
+  const canvas = useRef<HTMLCanvasElement>(null)
   useEffect(() => {
     const ctx = canvas.current;
 
-    if (Chart.getChart('myChart')) {
-      Chart.getChart('myChart')?.destroy();
-    }
-
-    // Group data by category and calculate total USD value for each category
-    const categoryData = data.reduce((acc, asset) => {
-      const category = asset.category;
-      if (!acc[category]) {
-        acc[category] = 0;
+    if (ctx) {
+      if (Chart.getChart('myChart')) {
+        Chart.getChart('myChart')?.destroy();
       }
-      acc[category] += asset.values.USD;
-      return acc;
-    }, {});
 
-    // Extract labels and data for the chart
-    const labels = Object.keys(categoryData);
-    const chartData = Object.values(categoryData).map((value) => value.toFixed(2));
+      // Group data by category and calculate total USD value for each category
+      const categoryData = data.reduce<Record<string, number>>((acc, asset) => {
+        const category = asset[categoryFieldName];
+        if (!acc[category]) {
+          acc[category] = 0;
+        }
+        acc[category] += asset.values.USD;
+        return acc;
+      }, {});
 
-    const chart = new Chart(ctx, {
-      type: 'pie',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: 'USD Value',
-            data: chartData,
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)',
-            ],
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
-          },
-          title: {
-            display: true,
-            text: 'Total USD Value by categories',
+      // Extract labels and data for the chart
+      const labels = Object.keys(categoryData);
+      const chartData = Object.values(categoryData).map((value: number) => value.toFixed(2));
+
+      const chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'USD Value',
+              data: chartData,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+              ],
+              borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'Total USD Value by categories',
+            },
           },
         },
-      },
-    });
-  }, [data])
+      });
+    }
+  }, [data, categoryFieldName])
 
   if (isLoading && data.length === 0) {
     return <div>Loading...</div>;
@@ -195,6 +207,20 @@ export function UserAssets() {
 
   return (
     <div className="bg-background rounded-lg shadow-lg">
+    <div className="p-4 border-b">
+      Address
+      <div className="grid grid-cols-3 gap-4">
+        <div>
+          <Input
+            name="address"
+            placeholder="Enter address"
+            value={currentAddress}
+            onChange={handleAddressChange}
+            className="bg-muted"
+          />
+        </div>
+      </div>
+    </div>
       <div className="p-4 border-b">
         Filters
         <div className="grid grid-cols-3 gap-4">

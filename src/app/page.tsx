@@ -5,6 +5,7 @@ export default function Home() {
     <body>
       <div><Link href={`/farms`}>Farms</Link></div>
       <div><Link href={`/userAssets`}>User Assets</Link></div>
+      <div><Link href={`/userAssets2`}>User Assets 2</Link></div>
     </body>
   )
 }
