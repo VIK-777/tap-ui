@@ -211,91 +211,123 @@ export function UserAssets({ address, flatten, categoryFieldName }: UserAssetsPr
 
   return (
     <div className="bg-background rounded-lg shadow-lg">
-    <div className="p-4 border-b">
-      Address
-      <div className="grid grid-cols-3 gap-4">
-        <div>
-          <Input
-            name="address"
-            placeholder="Enter address"
-            value={currentAddress}
-            onChange={handleAddressChange}
-            className="bg-muted"
-          />
-        </div>
-        <div> {/* Add a button to trigger data fetching */}
-          <Button onClick={loadData} disabled={isFetching}>
-            {isFetching ? (
-              <span className="loading custom-spinner"></span> // Spinner while loading
-            ) : (
-              "Fetch Data"
-            )}
-          </Button>
-        </div>
-      </div>
-    </div>
-      <div className="p-4 border-b">
-        Filters
-        <div className="grid grid-cols-3 gap-4">
-          <div>
-            <Input
-              name="name"
-              placeholder="Search by name"
-              value={searchTerms.name}
-              onChange={handleSearch}
-              className="bg-muted"
-            />
+      {data.length === 0 ? (
+        <div className="p-4 border-b">
+          Address
+          <div className="grid grid-cols-3 gap-4">
+            <div>
+              <Input
+                name="address"
+                placeholder="Enter address"
+                value={currentAddress}
+                onChange={handleAddressChange}
+                className="bg-muted"
+              />
+            </div>
+            <div> {/* Add a button to trigger data fetching */}
+              <Button onClick={loadData} disabled={isFetching}>
+                {isFetching ? (
+                  <span className="loading custom-spinner"></span> // Spinner while loading
+                ) : (
+                  "Fetch Data"
+                )}
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="p-4 border-b">
-        Total assets: ${(data.reduce((sum, item) => sum + item.values.USD, 0)).toFixed(2)} / {(data.reduce((sum, item) => sum + item.values.TON, 0)).toFixed(2)} TON
-      </div>
-      <div className='container'>
-        <canvas id='myChart' ref={canvas}></canvas>
-      </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead></TableHead>
-            <TableHead className="cursor-pointer" onClick={() => handleSort("category")}>
-              Category
-              {sortColumn === "category" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
-            </TableHead>
-            <TableHead className="cursor-pointer" onClick={() => handleSort("name")}>
-              Name
-              {sortColumn === "name" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
-            </TableHead>
-            <TableHead className="cursor-pointer" onClick={() => handleSort("balance")}>
-              Balance
-              {sortColumn === "balance" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
-            </TableHead>
-            <TableHead className="cursor-pointer" onClick={() => handleSort("values.USD")}>
-              USD Total
-              {sortColumn === "values.USD" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
-            </TableHead>
-            <TableHead className="cursor-pointer" onClick={() => handleSort("values.TON")}>
-              TON Total
-              {sortColumn === "values.TON" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {sortedAssets
-      .map((dat, index) => (
-            <TableRow key={index}>
-              <TableCell>{index + 1}</TableCell>
-              <TableCell>{dat.category}</TableCell>
-              <TableCell style={styles.container}>
-                <img src={dat.image} style={styles.image} title={dat.name}></img><a style={styles.text}>{dat.name}</a>
-              </TableCell>
-              <TableCell>{dat.balance.toFixed(2)} {dat.symbol}</TableCell>
-              <TableCell>${dat.values.USD.toFixed(2)}</TableCell>
-              <TableCell>{dat.values.TON.toFixed(2)} TON</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      ) : (
+        <>
+          <div className="p-4 border-b">
+          Address
+          <div className="grid grid-cols-3 gap-4">
+            <div>
+              <Input
+                name="address"
+                placeholder="Enter address"
+                value={currentAddress}
+                onChange={handleAddressChange}
+                className="bg-muted"
+              />
+            </div>
+            <div> {/* Add a button to trigger data fetching */}
+              <Button onClick={loadData} disabled={isFetching}>
+                {isFetching ? (
+                  <span className="loading custom-spinner"></span> // Spinner while loading
+                ) : (
+                  "Fetch Data"
+                )}
+              </Button>
+            </div>
+          </div>
+          </div>
+          <div className="p-4 border-b">
+            Filters
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <Input
+                  name="name"
+                  placeholder="Search by name"
+                  value={searchTerms.name}
+                  onChange={handleSearch}
+                  className="bg-muted"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="p-4 border-b">
+            Total assets: ${(data.reduce((sum, item) => sum + item.values.USD, 0)).toFixed(2)} / {(data.reduce((sum, item) => sum + item.values.TON, 0)).toFixed(2)} TON
+          </div>
+          <div className='container'>
+            <canvas id='myChart' ref={canvas}></canvas>
+          </div>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead></TableHead>
+                {!flatten && (
+                  <TableHead className="cursor-pointer" onClick={() => handleSort("category")}>
+                    Category
+                    {sortColumn === "category" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
+                  </TableHead>
+                )}
+                <TableHead className="cursor-pointer" onClick={() => handleSort("name")}>
+                  Name
+                  {sortColumn === "name" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
+                </TableHead>
+                <TableHead className="cursor-pointer" onClick={() => handleSort("balance")}>
+                  Balance
+                  {sortColumn === "balance" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
+                </TableHead>
+                <TableHead className="cursor-pointer" onClick={() => handleSort("values.USD")}>
+                  USD Total
+                  {sortColumn === "values.USD" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
+                </TableHead>
+                <TableHead className="cursor-pointer" onClick={() => handleSort("values.TON")}>
+                  TON Total
+                  {sortColumn === "values.TON" && <span className="ml-2">{sortDirection === "asc" ? "\u2191" : "\u2193"}</span>}
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {sortedAssets
+          .map((dat, index) => (
+                <TableRow key={index}>
+                  <TableCell>{index + 1}</TableCell>
+                  {!flatten && (
+                    <TableCell>{dat.category}</TableCell>
+                  )}
+                  <TableCell style={styles.container}>
+                    <img src={dat.image} style={styles.image} title={dat.name}></img><a style={styles.text}>{dat.name}</a>
+                  </TableCell>
+                  <TableCell>{dat.balance.toFixed(2)} {dat.symbol}</TableCell>
+                  <TableCell>${dat.values.USD.toFixed(2)}</TableCell>
+                  <TableCell>{dat.values.TON.toFixed(2)} TON</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </>
+      )}
     </div>
   )
 }
