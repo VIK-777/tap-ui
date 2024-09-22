@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/table"
 import Chart from "chart.js/auto"
 import { Button } from "@/components/ui/button"
+import React from "react"
 
 interface UserAssetKeys {
   [key: string]: any
@@ -51,7 +52,7 @@ interface UserAsset extends UserAssetKeys {
     USD: number
   }
   comment: string
-  mappedAssets: [UserAsset]
+  mappedAssets: UserAsset[]
 }
 
 interface UserAssetsProps {
@@ -135,7 +136,8 @@ export function UserAssets({
   const styles = {
     container: {
       display: "flex",
-      alignItems: "center", // Align items vertically centered
+      alignItems: "center", // This will vertically center the content
+      lineHeight: "auto",
     },
     image: {
       height: "2em", // Set the image height to match the text height
@@ -144,7 +146,7 @@ export function UserAssets({
       borderRadius: "50%",
     },
     text: {
-      lineHeight: "1em", // Ensure line height matches the image height
+      lineHeight: "auto", // Ensure line height matches the image height
       margin: "0 10px", // Optional: Add some margin around the text
     },
   }
@@ -218,9 +220,30 @@ export function UserAssets({
     }
   }, [data, categoryFieldName])
 
-  // if (isLoading && data.length === 0) {
-  //   return <div>Loading...</div>;
-  // }
+  const renderAssets = (assets: UserAsset[], level = 0) => {
+    if (!assets || assets.length === 0) {
+      return ""
+    }
+
+    const indentStyle = { paddingLeft: `${level * 20}px` } // 20px indentation per level
+
+    return (
+      <ul>
+        {assets.map((asset, i) => (
+          <li key={i} style={indentStyle}>
+            {/* Optional: Add a visual cue like an arrow */}
+            {level > 0 && "↳ "}
+            {Number.isInteger(asset.balance)
+              ? asset.balance
+              : asset.balance.toFixed(2)}{" "}
+            {asset.symbol}
+            {/* Recursively render nested mapped assets */}
+            {asset.mappedAssets && renderAssets(asset.mappedAssets, level + 1)}
+          </li>
+        ))}
+      </ul>
+    )
+  }
 
   return (
     <div className="bg-background rounded-lg shadow-lg">
@@ -363,16 +386,16 @@ export function UserAssets({
                 <TableRow key={index}>
                   <TableCell>{index + 1}</TableCell>
                   {!flatten && <TableCell>{dat.category}</TableCell>}
-                  <TableCell style={styles.container}>
-                    <img
-                      src={dat.image}
-                      style={styles.image}
-                      title={dat.name}></img>
-                    <a style={styles.text}>{dat.name}</a>
-                  </TableCell>
                   <TableCell>
-                    {dat.balance.toFixed(2)} {dat.symbol}
+                    <div style={styles.container}>
+                      <img
+                        src={dat.image}
+                        style={styles.image}
+                        title={dat.name}></img>
+                      <a style={styles.text}>{dat.name}</a>
+                    </div>
                   </TableCell>
+                  <TableCell>{renderAssets([dat])}</TableCell>
                   <TableCell>${dat.values.USD.toFixed(2)}</TableCell>
                   <TableCell>{dat.values.TON.toFixed(2)} TON</TableCell>
                 </TableRow>
