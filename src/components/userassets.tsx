@@ -33,6 +33,7 @@ import {
 import Chart from "chart.js/auto"
 import { Button } from "@nextui-org/react"
 import React from "react"
+import { motion, AnimatePresence } from "framer-motion"
 
 interface UserAssetKeys {
   [key: string]: any
@@ -257,11 +258,18 @@ export function UserAssets({
                   {expandedAssets[assetIndex] ? "Collapse" : "Expand"}
                 </Button>
               )}
-            {expandedAssets[assetIndex] && asset.mappedAssets && (
-              <div>
-                {renderAssets(asset.mappedAssets, assetIndex, level + 1)}
-              </div>
-            )}
+            <AnimatePresence>
+              {expandedAssets[assetIndex] && asset.mappedAssets && (
+                <motion.div
+                  key={assetIndex}
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}>
+                  {renderAssets(asset.mappedAssets, assetIndex, level + 1)}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         ))}
       </div>
