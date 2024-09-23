@@ -363,7 +363,7 @@ export function UserAssets({
                       <a style={styles.text}>{dat.name}</a>
                     </div>
                   </TableCell>
-                  <TableCell>renderAssets([dat])</TableCell>
+                  <TableCell>{renderAssets([dat])}</TableCell>
                   <TableCell>${dat.values.USD.toFixed(2)}</TableCell>
                   <TableCell>{dat.values.TON.toFixed(2)} TON</TableCell>
                 </TableRow>
