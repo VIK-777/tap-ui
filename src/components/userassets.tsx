@@ -24,13 +24,14 @@ import { Input } from "@/components/ui/input"
 import {
   Table,
   TableHeader,
-  TableRow,
-  TableHead,
   TableBody,
+  TableRow,
   TableCell,
-} from "@/components/ui/table"
+  TableColumn,
+  SortDescriptor,
+} from "@nextui-org/table"
 import Chart from "chart.js/auto"
-import { Button } from "@/components/ui/button"
+import { Button } from "@nextui-org/react"
 import React from "react"
 
 interface UserAssetKeys {
@@ -69,7 +70,7 @@ export function UserAssets({
   const [searchTerms, setSearchTerms] = useState({
     name: "",
   })
-  const [sortColumn, setSortColumn] = useState(null)
+  const [sortColumn, setSortColumn] = useState<string | undefined>("")
   const [sortDirection, setSortDirection] = useState<any>(null)
   const [data, setData] = useState<UserAsset[]>([])
   // const [isLoading, setIsLoading] = useState(true);
@@ -114,13 +115,14 @@ export function UserAssets({
     })
   }, [filteredAssets, sortColumn, sortDirection, data])
 
-  const handleSort = (column: any) => {
-    if (sortColumn === column) {
+  const handleSort = (sortDescriptor: SortDescriptor) => {
+    if (sortColumn === sortDescriptor.column) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc")
     } else {
-      setSortColumn(column)
+      setSortColumn(sortDescriptor.column?.toString())
       setSortDirection("asc")
     }
+    return sortedAssets
   }
   const handleSearch = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target
@@ -320,72 +322,38 @@ export function UserAssets({
             {data.reduce((sum, item) => sum + item.values.TON, 0).toFixed(2)}{" "}
             TON
           </div>
-          <div className="container">
+          <div
+            className="container"
+            style={{ width: "300px", height: "300px" }}>
             <canvas id="myChart" ref={canvas}></canvas>
           </div>
-          <Table>
+          <Table
+            aria-label="User Assets Table" // Add an accessible label
+            onSortChange={handleSort}
+            isStriped>
             <TableHeader>
-              <TableRow>
-                <TableHead></TableHead>
-                {!flatten && (
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort("category")}>
-                    Category
-                    {sortColumn === "category" && (
-                      <span className="ml-2">
-                        {sortDirection === "asc" ? "\u2191" : "\u2193"}
-                      </span>
-                    )}
-                  </TableHead>
-                )}
-                <TableHead
-                  className="cursor-pointer"
-                  onClick={() => handleSort("name")}>
-                  Name
-                  {sortColumn === "name" && (
-                    <span className="ml-2">
-                      {sortDirection === "asc" ? "\u2191" : "\u2193"}
-                    </span>
-                  )}
-                </TableHead>
-                <TableHead
-                  className="cursor-pointer"
-                  onClick={() => handleSort("balance")}>
-                  Balance
-                  {sortColumn === "balance" && (
-                    <span className="ml-2">
-                      {sortDirection === "asc" ? "\u2191" : "\u2193"}
-                    </span>
-                  )}
-                </TableHead>
-                <TableHead
-                  className="cursor-pointer"
-                  onClick={() => handleSort("values.USD")}>
-                  USD Total
-                  {sortColumn === "values.USD" && (
-                    <span className="ml-2">
-                      {sortDirection === "asc" ? "\u2191" : "\u2193"}
-                    </span>
-                  )}
-                </TableHead>
-                <TableHead
-                  className="cursor-pointer"
-                  onClick={() => handleSort("values.TON")}>
-                  TON Total
-                  {sortColumn === "values.TON" && (
-                    <span className="ml-2">
-                      {sortDirection === "asc" ? "\u2191" : "\u2193"}
-                    </span>
-                  )}
-                </TableHead>
-              </TableRow>
+              <TableColumn> </TableColumn>
+              <TableColumn key="category" allowsSorting>
+                Category
+              </TableColumn>
+              <TableColumn key="name" allowsSorting>
+                Name
+              </TableColumn>
+              <TableColumn key="balance" allowsSorting>
+                Balance
+              </TableColumn>
+              <TableColumn key="values.USD" allowsSorting>
+                USD Total
+              </TableColumn>
+              <TableColumn key="values.TON" allowsSorting>
+                TON Total
+              </TableColumn>
             </TableHeader>
             <TableBody>
               {sortedAssets.map((dat, index) => (
                 <TableRow key={index}>
                   <TableCell>{index + 1}</TableCell>
-                  {!flatten && <TableCell>{dat.category}</TableCell>}
+                  <TableCell>{dat.category}</TableCell>
                   <TableCell>
                     <div style={styles.container}>
                       <img
@@ -395,7 +363,7 @@ export function UserAssets({
                       <a style={styles.text}>{dat.name}</a>
                     </div>
                   </TableCell>
-                  <TableCell>{renderAssets([dat])}</TableCell>
+                  <TableCell>renderAssets([dat])</TableCell>
                   <TableCell>${dat.values.USD.toFixed(2)}</TableCell>
                   <TableCell>{dat.values.TON.toFixed(2)} TON</TableCell>
                 </TableRow>
