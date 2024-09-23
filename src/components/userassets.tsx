@@ -222,28 +222,49 @@ export function UserAssets({
     }
   }, [data, categoryFieldName])
 
-  const renderAssets = (assets: UserAsset[], level = 0) => {
-    if (!assets || assets.length === 0) {
-      return ""
-    }
+  // State to manage expansion for each asset
+  const [expandedAssets, setExpandedAssets] = useState<Record<number, boolean>>(
+    {}
+  )
 
+  // Function to toggle asset expansion
+  const toggleAssetExpansion = (assetIndex: number) => {
+    setExpandedAssets((prevExpandedAssets) => ({
+      ...prevExpandedAssets,
+      [assetIndex]: !prevExpandedAssets[assetIndex],
+    }))
+  }
+
+  const renderAssets = (assets: UserAsset[], assetIndex: number, level = 0) => {
     const indentStyle = { paddingLeft: `${level * 20}px` } // 20px indentation per level
 
     return (
-      <ul>
+      <div>
         {assets.map((asset, i) => (
-          <li key={i} style={indentStyle}>
-            {/* Optional: Add a visual cue like an arrow */}
+          <div style={indentStyle} key={i}>
             {level > 0 && "↳ "}
             {Number.isInteger(asset.balance)
               ? asset.balance
               : asset.balance.toFixed(2)}{" "}
-            {asset.symbol}
-            {/* Recursively render nested mapped assets */}
-            {asset.mappedAssets && renderAssets(asset.mappedAssets, level + 1)}
-          </li>
+            {asset.symbol}{" "}
+            {level === 0 &&
+              i === 0 &&
+              assets[0].mappedAssets &&
+              assets[0].mappedAssets.length > 0 && (
+                <Button
+                  size="sm"
+                  onClick={() => toggleAssetExpansion(assetIndex)}>
+                  {expandedAssets[assetIndex] ? "Collapse" : "Expand"}
+                </Button>
+              )}
+            {expandedAssets[assetIndex] && asset.mappedAssets && (
+              <div>
+                {renderAssets(asset.mappedAssets, assetIndex, level + 1)}
+              </div>
+            )}
+          </div>
         ))}
-      </ul>
+      </div>
     )
   }
 
@@ -363,7 +384,9 @@ export function UserAssets({
                       <a style={styles.text}>{dat.name}</a>
                     </div>
                   </TableCell>
-                  <TableCell>{renderAssets([dat])}</TableCell>
+                  <TableCell>
+                    {renderAssets([dat], index)} {/* Pass the asset index */}
+                  </TableCell>
                   <TableCell>${dat.values.USD.toFixed(2)}</TableCell>
                   <TableCell>{dat.values.TON.toFixed(2)} TON</TableCell>
                 </TableRow>
