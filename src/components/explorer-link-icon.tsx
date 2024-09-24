@@ -8,6 +8,7 @@ export const ExplorerLinkIcon: React.FC<ExplorerLinkIconProps> = ({
   address,
 }) => {
   const explorerUrl = `https://tonviewer.com/${address}`
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || ""
 
   return (
     <a
@@ -20,7 +21,7 @@ export const ExplorerLinkIcon: React.FC<ExplorerLinkIconProps> = ({
         verticalAlign: "text-top",
       }}>
       <img
-        src="/explorer-image.svg"
+        src={`${baseUrl}/explorer-image.svg`}
         alt="View on Explorer"
         style={{
           verticalAlign: "middle",
