@@ -34,6 +34,7 @@ import Chart from "chart.js/auto"
 import { Button } from "@nextui-org/react"
 import React from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { ExplorerLinkIcon } from "@/components/explorer-link-icon"
 
 interface UserAssetKeys {
   [key: string]: any
@@ -42,6 +43,7 @@ interface UserAssetKeys {
 interface UserAsset extends UserAssetKeys {
   name: string
   symbol: string
+  address: string
   image: string
   category: string
   balance: number
@@ -147,10 +149,11 @@ export function UserAssets({
       width: "auto", // Maintain aspect ratio
       verticalAlign: "middle", // Ensure vertical alignment with text
       borderRadius: "50%",
+      marginRight: "10px",
     },
     text: {
       lineHeight: "auto", // Ensure line height matches the image height
-      margin: "0 10px", // Optional: Add some margin around the text
+      marginRight: "5px", // Optional: Add some margin around the text
     },
   }
 
@@ -237,7 +240,10 @@ export function UserAssets({
   }
 
   const renderAssets = (assets: UserAsset[], assetIndex: number, level = 0) => {
-    const indentStyle = { paddingLeft: `${level * 20}px` } // 20px indentation per level
+    const indentStyle = {
+      paddingLeft: `${level * 20}px`,
+      whiteSpace: "nowrap",
+    } // 20px indentation per level
 
     return (
       <div>
@@ -248,6 +254,7 @@ export function UserAssets({
               ? asset.balance
               : asset.balance.toFixed(2)}{" "}
             {asset.symbol}{" "}
+            {level > 0 && <ExplorerLinkIcon address={asset.address} />}
             {level === 0 &&
               i === 0 &&
               assets[0].mappedAssets &&
@@ -389,7 +396,10 @@ export function UserAssets({
                         src={dat.image}
                         style={styles.image}
                         title={dat.name}></img>
-                      <a style={styles.text}>{dat.name}</a>
+                      <span>
+                        <a style={styles.text}>{dat.name}</a>
+                        <ExplorerLinkIcon address={dat.address} />
+                      </span>
                     </div>
                   </TableCell>
                   <TableCell>
