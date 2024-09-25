@@ -80,21 +80,25 @@ export function UserAssets({
   const [currentAddress, setCurrentAddress] = useState(address)
   const [isFetching, setIsFetching] = useState(false) // State for loading indicator
 
+  // State to manage expansion for each asset
+  const [expandedAssets, setExpandedAssets] = useState<Record<number, boolean>>(
+    {}
+  )
+
   const loadData = () => {
     setIsFetching(true) // Show loading indicator
     fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/test?flatten=${flatten}&address=${currentAddress}`
     )
       .then((response) => response.json())
-      .then((json) => setData(json))
+      .then((json) => {
+        setData(json)
+        // Reset expanded rows when new data is fetched
+        setExpandedAssets({})
+      })
       .catch((error) => console.error("Error fetching data:", error))
       .finally(() => setIsFetching(false)) // Hide loading indicator
-    // setIsLoading(false)
   }
-
-  // useEffect(() => {
-  //   loadData()
-  // }, [currentAddress, flatten]);
 
   const filteredAssets = useMemo(() => {
     return data.filter((dat) => {
@@ -225,11 +229,6 @@ export function UserAssets({
       })
     }
   }, [data, categoryFieldName])
-
-  // State to manage expansion for each asset
-  const [expandedAssets, setExpandedAssets] = useState<Record<number, boolean>>(
-    {}
-  )
 
   // Function to toggle asset expansion
   const toggleAssetExpansion = (assetIndex: number) => {
