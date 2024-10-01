@@ -35,6 +35,7 @@ import { Button } from "@nextui-org/react"
 import React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ExplorerLinkIcon } from "@/components/explorer-link-icon"
+import { useTonAddress } from "@tonconnect/ui-react"
 
 interface UserAssetKeys {
   [key: string]: any
@@ -84,6 +85,14 @@ export function UserAssets({
   const [expandedAssets, setExpandedAssets] = useState<Record<number, boolean>>(
     {}
   )
+
+  const tonAddress = useTonAddress()
+
+  useEffect(() => {
+    if (tonAddress !== null && tonAddress !== undefined && tonAddress !== "") {
+      setCurrentAddress(tonAddress)
+    }
+  }, [tonAddress])
 
   const loadData = () => {
     setIsFetching(true) // Show loading indicator
