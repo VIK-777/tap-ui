@@ -1,3 +1,5 @@
+"use client"
+
 import { UserAssets } from "@/components/userassets"
 import { TonConnectUIProvider } from "@tonconnect/ui-react"
 import { Header } from "@/components/header"
