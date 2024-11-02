@@ -1,11 +1,14 @@
-import Link from 'next/link';
+"use client"
+
+import { TonConnectUIProvider } from "@tonconnect/ui-react"
+import { Header } from "@/components/header"
 
 export default function Home() {
   return (
-    <body>
-      <div><Link href={`/farms`}>Farms</Link></div>
-      <div><Link href={`/userAssets`}>User Assets</Link></div>
-      <div><Link href={`/userAssets2`}>User Assets 2</Link></div>
-    </body>
+    <TonConnectUIProvider manifestUrl="https://vik-777.github.io/tap-ui/tonconnect-manifest.json">
+      <div>
+        <Header />
+      </div>
+    </TonConnectUIProvider>
   )
 }

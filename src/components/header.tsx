@@ -1,4 +1,5 @@
 import { TonConnectButton } from "@tonconnect/ui-react"
+import Link from "next/link"
 
 export const Header = () => {
   return (
@@ -13,8 +14,17 @@ export const Header = () => {
         <span className="ml-2">
           {" "}
           {/* Add margin-left here */}
-          Vanguard Vision
+          <Link href={`/`}>Vanguard Vision</Link>
         </span>
+      </div>
+      <div>
+        <Link href={`/farms`}>Farms</Link>
+      </div>
+      <div>
+        <Link href={`/userAssets`}>User Assets</Link>
+      </div>
+      <div>
+        <Link href={`/userAssets2`}>User Assets 2</Link>
       </div>
       <TonConnectButton />
     </header>
