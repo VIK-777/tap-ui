@@ -3,7 +3,16 @@ import { TonConnectButton } from "@tonconnect/ui-react"
 export const Header = () => {
   return (
     <header className="flex justify-between items-center p-4">
-      <span>TON Analytics Platform</span>
+      <div className="flex items-center">
+        <div className="logo-container">
+          <img src="/favicon.ico" alt="Vanguard Vision Logo" />
+        </div>
+        <span className="ml-2">
+          {" "}
+          {/* Add margin-left here */}
+          Vanguard Vision
+        </span>
+      </div>
       <TonConnectButton />
     </header>
   )
