@@ -5,7 +5,10 @@ export const Header = () => {
     <header className="flex justify-between items-center p-4">
       <div className="flex items-center">
         <div className="logo-container">
-          <img src="/favicon.ico" alt="Vanguard Vision Logo" />
+          <img
+            src="https://vik-777.github.io/tap-ui/favicon.ico"
+            alt="Vanguard Vision Logo"
+          />
         </div>
         <span className="ml-2">
           {" "}
