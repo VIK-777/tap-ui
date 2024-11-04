@@ -1,7 +1,38 @@
 import { TonConnectButton } from "@tonconnect/ui-react"
 import Link from "next/link"
+import { useState, useEffect, useRef } from "react"
+
+// Create a reusable component for the links
+const NavigationLinks = ({ isMobile }: { isMobile: boolean }) => {
+  return (
+    <div className="flex justify-center">
+      {" "}
+      {/* Center links horizontally */}
+      <div className="mr-4">
+        <Link href={`/farms`}>Farms</Link>
+      </div>
+      <div className="mr-4">
+        <Link href={`/userAssets`}>User Assets</Link>
+      </div>
+      <div>
+        <Link href={`/userAssets2`}>User Assets 2</Link>
+      </div>
+    </div>
+  )
+}
 
 export const Header = () => {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    window.addEventListener("resize", handleResize)
+    handleResize()
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
   return (
     <header className="flex justify-between items-center p-4">
       <div className="flex items-center">
@@ -12,21 +43,35 @@ export const Header = () => {
           />
         </div>
         <span className="ml-2">
-          {" "}
-          {/* Add margin-left here */}
           <Link href={`/`}>Vanguard Vision</Link>
         </span>
       </div>
-      <div>
-        <Link href={`/farms`}>Farms</Link>
-      </div>
-      <div>
-        <Link href={`/userAssets`}>User Assets</Link>
-      </div>
-      <div>
-        <Link href={`/userAssets2`}>User Assets 2</Link>
-      </div>
+      {/* Conditionally render links based on isMobile state */}
+      {!isMobile && <NavigationLinks isMobile={isMobile} />}
       <TonConnectButton />
     </header>
+  )
+}
+
+export const Under = () => {
+  const [isMobile, setIsMobile] = useState(false)
+  const contentRef = useRef<HTMLDivElement>(null) // Ref for the main content
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    window.addEventListener("resize", handleResize)
+    handleResize()
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  return (
+    <div className="fixed bottom-0 left-0 w-full bg-gray-800">
+      {/* Apply fixed positioning */}
+      <div className="container mx-auto p-4 text-center">
+        {isMobile && <NavigationLinks isMobile={isMobile} />}
+      </div>
+    </div>
   )
 }
