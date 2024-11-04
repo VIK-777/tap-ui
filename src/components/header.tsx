@@ -67,8 +67,10 @@ export const Under = () => {
   }, [])
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-gray-800">
-      {/* Apply fixed positioning */}
+    <div
+      className="fixed bottom-0 left-0 w-full"
+      style={{ backgroundColor: "rgb(255, 255, 255)" }}>
+      {/* rgb(31, 41, 55) is the equivalent of gray-800 */}
       <div className="container mx-auto p-4 text-center">
         {isMobile && <NavigationLinks isMobile={isMobile} />}
       </div>
