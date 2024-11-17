@@ -15,7 +15,7 @@ const NavigationLinks = ({ isMobile }: { isMobile: boolean }) => {
         <Link href={`/userAssets`}>User Assets</Link>
       </div>
       <div>
-        <Link href={`/userAssets2`}>User Assets 2</Link>
+        <Link href={`/userAssetsPlain`}>User Assets (plain)</Link>
       </div>
     </div>
   )
