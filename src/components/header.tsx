@@ -14,7 +14,7 @@ const NavigationLinks = ({ isMobile }: { isMobile: boolean }) => {
       <div className="mr-4">
         <Link href={`/userAssets`}>User Assets</Link>
       </div>
-      <div>
+      <div className="mr-4">
         <Link href={`/userAssetsPlain`}>User Assets (plain)</Link>
       </div>
     </div>
@@ -39,11 +39,11 @@ export const Header = () => {
         <div className="logo-container">
           <img
             src="https://vik-777.github.io/tap-ui/favicon.ico"
-            alt="Vanguard Vision Logo"
+            alt="VV Logo"
           />
         </div>
         <span className="ml-2">
-          <Link href={`/`}>Vanguard Vision</Link>
+          <Link href={`/`}>VV</Link>
         </span>
       </div>
       {/* Conditionally render links based on isMobile state */}
