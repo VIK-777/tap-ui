@@ -1,5 +1,6 @@
 import { TonConnectButton } from "@tonconnect/ui-react"
 import Link from "next/link"
+import Image from "next/image"
 import { useState, useEffect, useRef } from "react"
 
 // Create a reusable component for the links
@@ -37,13 +38,17 @@ export const Header = () => {
     <header className="flex justify-between items-center p-4">
       <div className="flex items-center">
         <div className="logo-container">
-          <img
-            src="https://vik-777.github.io/tap-ui/favicon.ico"
-            alt="VV Logo"
-          />
+          <Link href={"/"}>
+            <Image
+              src="https://vik-777.github.io/tap-ui/logo.ico"
+              alt="VV Logo"
+              width={1024}
+              height={1024}
+            />
+          </Link>
         </div>
         <span className="ml-2">
-          <Link href={`/`}>VV</Link>
+          <Link href={`/`}>VV Tools</Link>
         </span>
       </div>
       {/* Conditionally render links based on isMobile state */}
