@@ -6,7 +6,7 @@ import { Header, Under } from "@/components/header"
 
 export default function Home() {
   return (
-    <TonConnectUIProvider manifestUrl="https://vik-777.github.io/tap-ui/tonconnect-manifest.json">
+    <TonConnectUIProvider manifestUrl="https://tontools.vishnevskiy.dev/tonconnect-manifest.json">
       <div>
         <Header />
         <div className="pb-20">

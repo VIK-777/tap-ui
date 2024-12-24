@@ -6,9 +6,9 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "vik-777.github.io",
+        hostname: "tontools.vishnevskiy.dev",
         port: "",
-        pathname: "/tap-ui/**",
+        pathname: "/**",
       },
     ],
   },

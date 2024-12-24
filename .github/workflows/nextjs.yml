@@ -37,7 +37,7 @@ jobs:
         run: |
           cat <<EOF > .env.local
           NEXT_PUBLIC_BACKEND_URL="$NEXT_PUBLIC_BACKEND_URL"
-          NEXT_PUBLIC_BASE_URL='https://vik-777.github.io/tap-ui'
+          NEXT_PUBLIC_BASE_URL='https://tontools.vishnevskiy.dev'
           EOF
       - name: Detect package manager
         id: detect-package-manager

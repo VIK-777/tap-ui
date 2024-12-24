@@ -40,7 +40,7 @@ export const Header = () => {
         <div className="logo-container">
           <Link href={"/"}>
             <Image
-              src="https://vik-777.github.io/tap-ui/logo.ico"
+              src="https://tontools.vishnevskiy.dev/logo.ico"
               alt="VV Logo"
               width={1024}
               height={1024}
