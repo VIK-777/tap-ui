@@ -48,7 +48,9 @@ export const Header = () => {
           </Link>
         </div>
         <span className="ml-2">
-          <Link href={`/`}>TON Tools (by VV)</Link>
+          <Link href={`/`}>
+            TON Tools <sub>by VV</sub>
+          </Link>
         </span>
       </div>
       {/* Conditionally render links based on isMobile state */}
