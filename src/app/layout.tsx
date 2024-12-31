@@ -5,8 +5,8 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "VV Tools",
-  description: "VV — Useful tools for TON",
+  title: "TON Tools (by VV)",
+  description: "Some useful tools for TON",
 }
 
 export default function RootLayout({
