@@ -1,7 +1,7 @@
-import { TonConnectButton } from "@tonconnect/ui-react"
 import Link from "next/link"
 import Image from "next/image"
 import { useState, useEffect, useRef } from "react"
+import TonConnectButton from "./TonConnectButton"
 
 // Create a reusable component for the links
 const NavigationLinks = ({ isMobile }: { isMobile: boolean }) => {

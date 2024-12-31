@@ -1,8 +1,8 @@
 "use client"
 
 import { UserAssets } from "@/components/userassets"
-import { TonConnectUIProvider } from "@tonconnect/ui-react"
 import { Header, Under } from "@/components/header"
+import TonConnectUIProvider from "@/components/TonConnectUIProvider"
 
 export default function Home() {
   return (

@@ -35,7 +35,7 @@ import { Button } from "@nextui-org/react"
 import React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ExplorerLinkIcon } from "@/components/explorer-link-icon"
-import { useTonAddress } from "@tonconnect/ui-react"
+import { useTonAddress } from "@/hooks/useTonAddress"
 
 interface UserAssetKeys {
   [key: string]: any
