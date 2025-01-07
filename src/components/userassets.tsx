@@ -97,7 +97,7 @@ export function UserAssets({
   const loadData = () => {
     setIsFetching(true) // Show loading indicator
     fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/userAssets?flatten=${flatten}&address=${currentAddress}`
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/userAssets?flatten=${flatten}&addresses=${currentAddress}`
     )
       .then((response) => response.json())
       .then((json) => {
