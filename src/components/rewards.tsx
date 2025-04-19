@@ -190,33 +190,34 @@ export function Rewards() {
     )
   }, [dataToRender])
 
-  const renderTable = () => {
-    const sortedData = useMemo(() => {
-      if (!sortColumn || !sortDirection) return dataToRender
+  const sortedData = useMemo(() => {
+    if (!sortColumn || !sortDirection) return dataToRender
 
-      return [...dataToRender].sort((a, b) => {
-        const valueA =
-          typeof a === "object" && sortColumn in a
-            ? a[sortColumn as keyof typeof a]
-            : null
-        const valueB =
-          typeof b === "object" && sortColumn in b
-            ? b[sortColumn as keyof typeof b]
-            : null
-        if (typeof valueA === "string" && typeof valueB === "string") {
-          return sortDirection === "asc"
-            ? valueA.localeCompare(valueB)
-            : valueB.localeCompare(valueA)
-        }
+    return [...dataToRender].sort((a, b) => {
+      const valueA =
+        typeof a === "object" && sortColumn in a
+          ? a[sortColumn as keyof typeof a]
+          : null
+      const valueB =
+        typeof b === "object" && sortColumn in b
+          ? b[sortColumn as keyof typeof b]
+          : null
 
-        if (typeof valueA === "number" && typeof valueB === "number") {
-          return sortDirection === "asc" ? valueA - valueB : valueB - valueA
-        }
+      if (typeof valueA === "string" && typeof valueB === "string") {
+        return sortDirection === "asc"
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA)
+      }
 
-        return 0
-      })
-    }, [dataToRender, sortColumn, sortDirection])
+      if (typeof valueA === "number" && typeof valueB === "number") {
+        return sortDirection === "asc" ? valueA - valueB : valueB - valueA
+      }
 
+      return 0
+    })
+  }, [dataToRender, sortColumn, sortDirection])
+
+  const renderTable = (sortedData: typeof dataToRender) => {
     if (extendedInfo) {
       // Extended Info Table
       return (
@@ -406,7 +407,7 @@ export function Rewards() {
         <div className="mb-4 text-lg font-medium">
           Total Value: {totalSum.toFixed(2)} TON
         </div>
-        {renderTable()}
+        {renderTable(sortedData)}
       </div>
     </div>
   )
